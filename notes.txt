@@ -1,0 +1,11 @@
+NodeJS
+git bash
+
+Visual Studio Code
+	ES7 React
+	Bracket Pair Colorizer
+	Prettier
+	Live Server
+
+Mongo DB
+	mLab

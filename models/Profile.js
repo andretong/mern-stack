@@ -1,4 +1,4 @@
-sconst mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema({
@@ -48,7 +48,7 @@ const ProfileSchema = new Schema({
         type: String
       } ,
       from : {
-        type: Date
+        type: Date,
         required : true
       },
       to : {
@@ -78,7 +78,7 @@ const ProfileSchema = new Schema({
         required : true
       } ,
       from : {
-        type: Date
+        type: Date,
         required : true
       },
       to : {
