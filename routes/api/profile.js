@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
-
+const validateProfileInput = require('../../validation/profile');
 
 //Load Profile
 const Profile = require('../../models/Profile');
@@ -23,6 +23,7 @@ router.get('/', passport.authenticate('jwt', { session : false}),
  (req, res) => {
    const errors = {};
    Profile.findOne({ user : req.user.id })
+   .populate('user', ['name', 'avatar'])
    .then(profile => {
        if (!profile){
          errors.noprofile = 'There is no Profile for this user';
@@ -39,7 +40,13 @@ router.get('/', passport.authenticate('jwt', { session : false}),
 // @access  Private
 router.post('/', passport.authenticate('jwt', { session : false}),
  (req, res) => {
-   const errors = {};
+   const { errors , isValid} = validateProfileInput(req.body);
+
+   //Check Validations
+   if (!isValid){
+     //Return any errors
+     return res.status(400).json(errors);
+   }
 
    const profileFields = {};
    profileFields.user = req.user.id;
@@ -89,10 +96,8 @@ router.post('/', passport.authenticate('jwt', { session : false}),
           }
 
           //Save Profile
-          new Profile(profileFields).save()
-            .then(profile =>
-              res.json(profile);
-            );
+          new Profile(profileFields).save().then(profile => res.json(profile));
+
         });
       }
     });
